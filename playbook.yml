@@ -1,0 +1,90 @@
+---
+- name: Setup Minecraft Server
+  hosts: minecraft_server
+  become: yes
+  vars:
+    minecraft_port: #minecraft port
+    max_players: #number of may players
+    Motd: #server name
+
+  tasks:
+  
+    - name: Update
+      command: apt-get update
+      ignore_errors: false
+      
+    - name: Create java directory
+      file:
+        path: /opt/java
+        state: directory
+        mode: '0755'  
+      
+    - name: Download Java 21
+      get_url:
+        url: https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.deb
+        dest: /opt/java
+        mode: '0755'
+        
+    - name: Install Screen
+      command: apt-get install screen -y
+      ignore_errors: false
+    
+    - name: Install Java 21
+      command: sudo apt install /opt/java/jdk-21_linux-x64_bin.deb
+      ignore_errors: false
+          
+    - name: Create Minecraft server directory
+      file:
+        path: /opt/minecraft_server
+        state: directory
+        mode: '0755'
+
+    - name: Download Minecraft server .jar file
+      get_url:
+        url: https://piston-data.mojang.com/v1/objects/45810d238246d90e811d896f87b14695b7fb6839/server.jar
+        dest: /opt/minecraft_server/minecraft_server.1.21.jar
+        mode: '0755'
+
+    - name: Create start script
+      copy:
+        dest: /opt/minecraft_server/start.sh
+        content: |
+          #!/bin/bash
+          screen -S TestServer -d -m /usr/lib/jvm/jdk-21.0.5-oracle-x64/bin/java -Xmx1024M -Xms1024M -jar minecraft_server.1.21.jar nogui
+        mode: '0755'
+    
+    - name: Create Eula
+      copy:
+        dest: /opt/minecraft_server/eula.txt
+        content: eula=true
+        mode: '0755'
+
+    - name: Run Minecraft server to generate initial files
+      command: bash start.sh
+      args:
+        chdir: /opt/minecraft_server
+      ignore_errors: false
+      
+
+    - name: Set Minecraft server port
+      lineinfile:
+        path: /opt/minecraft_server/server.properties
+        regexp: '^server-port='
+        line: "server-port={{ minecraft_port }}"
+        create: yes
+        
+    - name: Set Max players
+      lineinfile:
+        path: /opt/minecraft_server/server.properties
+        regexp: '^max-players='
+        line: "max-players={{ max_players}}"
+        create: yes
+        
+    - name: Set motd
+      lineinfile:
+        path: /opt/minecraft_server/server.properties
+        regexp: '^motd='
+        line: "motd={{ Motd}}"
+        create: yes
+        
+  
