@@ -65,7 +65,6 @@
         chdir: /opt/minecraft_server
       ignore_errors: false
       
-
     - name: Set Minecraft server port
       lineinfile:
         path: /opt/minecraft_server/server.properties
