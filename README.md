@@ -7,4 +7,4 @@ To configure
 
 # Run the Script
 
- to run the script Type ansible-playbook -i (playbook_name) *without ssh key* --ask-pass
+ to run the script Type ansible-playbook -i hosts (playbook_name) *without ssh key* --ask-pass
