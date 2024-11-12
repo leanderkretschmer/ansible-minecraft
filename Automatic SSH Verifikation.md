@@ -24,7 +24,7 @@
     sudo whoami
 
 
- # Create SSh Keys on the Ansible server 
+ # Create SSH Keys on the Ansible server 
 
     ssh-keygen -t rsa -b 4096 -C "ansible@yourserver"
       
