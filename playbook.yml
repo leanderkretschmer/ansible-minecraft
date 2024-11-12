@@ -13,7 +13,7 @@
   tasks:
   
     - name: Update
-      command: apt-get update
+      command: sudo apt-get update
       ignore_errors: false
       
     - name: Create java directory
@@ -29,11 +29,11 @@
         mode: '0755'
         
     - name: Install Screen
-      command: apt-get install screen -y
+      command: sudo apt-get install screen -y
       ignore_errors: false
     
     - name: Install Java 21
-      command: sudo apt install /opt/java/jdk-21_linux-x64_bin.deb
+      command: sudo sudo apt install /opt/java/jdk-21_linux-x64_bin.deb
       ignore_errors: false
           
     - name: Create Minecraft server directory
