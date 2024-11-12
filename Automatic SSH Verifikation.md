@@ -9,7 +9,9 @@
   Give the user sudo Perms
 
     sudo usermod -aG sudo ansible
-      (when using CentOS oder RHEL)
+      
+   *when using CentOS oder RHEL*
+      
     sudo usermod -aG wheel ansible
 
   Optionaly you can grand authless sudo perms 
@@ -28,11 +30,11 @@
       
   *the keys will be safed in ~/.ssh/id_rsa (private) ~/.ssh/id_rsa.pub (public)*
 
- # Send the Public key to the destination server 
+  Send the Public key to the destination server 
 
     ssh-copy-id ansible@destserver
 
- # Test Out the connection 
+  Test Out the connection 
 
     ssh ansible@destserver
 
