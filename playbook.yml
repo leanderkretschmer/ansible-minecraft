@@ -81,25 +81,25 @@
         chdir: /opt/minecraft_server
       ignore_errors: false
       
-    - name: Set Minecraft server port
-      lineinfile:
-        path: /opt/minecraft_server/server.properties
-        regexp: '^server-port='
-        line: "server-port={{ minecraft_port }}"
-        create: yes
+#    - name: Set Minecraft server port
+#     lineinfile:
+#        path: /opt/minecraft_server/server.properties
+#        regexp: '^server-port='
+#        line: "server-port={{ minecraft_port }}"
+#       create: yes
         
-    - name: Set Max players
-      lineinfile:
-        path: /opt/minecraft_server/server.properties
-        regexp: '^max-players='
-        line: "max-players={{ max_players}}"
-        create: yes
+#    - name: Set Max players
+#      lineinfile:
+#        path: /opt/minecraft_server/server.properties
+#        regexp: '^max-players='
+#        line: "max-players={{ max_players}}"
+#        create: yes
         
-    - name: Set motd
-      lineinfile:
-        path: /opt/minecraft_server/server.properties
-        regexp: '^motd='
-        line: "motd={{ Motd}}"
-        create: yes
+#    - name: Set motd
+#      lineinfile:
+#        path: /opt/minecraft_server/server.properties
+#        regexp: '^motd='
+#        line: "motd={{ Motd}}"
+#        create: yes
         
   
