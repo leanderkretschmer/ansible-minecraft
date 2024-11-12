@@ -3,9 +3,12 @@
   hosts: minecraft_server
   become: yes
   vars:
-    minecraft_port: #minecraft port
-    max_players: #number of may players
-    Motd: #server name
+    minecraft_port: #Minecraft port
+    max_players: #Number of max Players
+    server_motd: #Server Name
+    sim_distance: #Simulation Distance
+    online_mode: #True / False
+    servers_gamemode: #survival / creative / usw
 
   tasks:
   
@@ -57,6 +60,19 @@
       copy:
         dest: /opt/minecraft_server/eula.txt
         content: eula=true
+        mode: '0755'
+
+    - name: Create Server Properties
+      copy:
+        dest: /opt/minecraft_server/server.properties
+        content: 
+          #Minecraft server properties
+          server-port={{ minecraft_port }}
+          motd={{ server_motd }}
+          max-players={{ max_players }}
+          simulation-distance={{ sim_distance }}
+          online-mode={{ online_mode }}
+          gamemode={{ servers_gamemode }}
         mode: '0755'
 
     - name: Run Minecraft server to generate initial files
