@@ -3,14 +3,17 @@
   hosts: minecraft_server
   become: yes
   vars:
-    minecraft_port: #minecraft port
-    max_players: #number of may players
-    Motd: #server name
+    minecraft_port: #Minecraft port
+    max_players: #Number of max Players
+    server_motd: #Server Name
+    sim_distance: #Simulation Distance
+    online_mode: #True / False
+    servers_gamemode: #survival / creative / usw
 
   tasks:
   
     - name: Update
-      command: apt-get update
+      command: sudo apt-get update
       ignore_errors: false
       
     - name: Create java directory
@@ -26,11 +29,11 @@
         mode: '0755'
         
     - name: Install Screen
-      command: apt-get install screen -y
+      command: sudo apt-get install screen -y
       ignore_errors: false
     
     - name: Install Java 21
-      command: sudo apt install /opt/java/jdk-21_linux-x64_bin.deb
+      command: sudo sudo apt install /opt/java/jdk-21_linux-x64_bin.deb
       ignore_errors: false
           
     - name: Create Minecraft server directory
@@ -59,31 +62,44 @@
         content: eula=true
         mode: '0755'
 
+    - name: Create Server Properties
+      copy:
+        dest: /opt/minecraft_server/server.properties
+        content: 
+          #Minecraft server properties
+          server-port={{ minecraft_port }}
+          motd={{ server_motd }}
+          max-players={{ max_players }}
+          simulation-distance={{ sim_distance }}
+          online-mode={{ online_mode }}
+          gamemode={{ servers_gamemode }}
+        mode: '0755'
+
     - name: Run Minecraft server to generate initial files
       command: bash start.sh
       args:
         chdir: /opt/minecraft_server
       ignore_errors: false
       
-    - name: Set Minecraft server port
-      lineinfile:
-        path: /opt/minecraft_server/server.properties
-        regexp: '^server-port='
-        line: "server-port={{ minecraft_port }}"
-        create: yes
+#    - name: Set Minecraft server port
+#     lineinfile:
+#        path: /opt/minecraft_server/server.properties
+#        regexp: '^server-port='
+#        line: "server-port={{ minecraft_port }}"
+#       create: yes
         
-    - name: Set Max players
-      lineinfile:
-        path: /opt/minecraft_server/server.properties
-        regexp: '^max-players='
-        line: "max-players={{ max_players}}"
-        create: yes
+#    - name: Set Max players
+#      lineinfile:
+#        path: /opt/minecraft_server/server.properties
+#        regexp: '^max-players='
+#        line: "max-players={{ max_players}}"
+#        create: yes
         
-    - name: Set motd
-      lineinfile:
-        path: /opt/minecraft_server/server.properties
-        regexp: '^motd='
-        line: "motd={{ Motd}}"
-        create: yes
+#    - name: Set motd
+#      lineinfile:
+#        path: /opt/minecraft_server/server.properties
+#        regexp: '^motd='
+#        line: "motd={{ Motd}}"
+#        create: yes
         
   
